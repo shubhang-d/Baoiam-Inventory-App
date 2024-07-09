@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "49519488868",
+    "project_id": "baoiam-inventory-app",
+    "storage_bucket": "baoiam-inventory-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:49519488868:android:6fac3418cc5652acb65471",
+        "android_client_info": {
+          "package_name": "com.example.baoiaminventoryapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrBiZJhCUaLlOUrcZ5WQjHuGanL11gyGY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
