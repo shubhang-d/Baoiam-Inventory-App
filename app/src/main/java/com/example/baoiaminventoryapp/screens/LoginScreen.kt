@@ -61,7 +61,7 @@ fun LoginPage() {
         .padding(WindowInsets.statusBars.asPaddingValues())
     ) {
         Column (horizontalAlignment = Alignment.CenterHorizontally){
-//            Spacer(modifier = Modifier.height(10.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             Image(
                 painter = painterResource(id = R.drawable.divueenscropped),
                 contentDescription = "Company_logo",
@@ -79,7 +79,7 @@ fun LoginPage() {
                 fontFamily = FontFamily.Cursive,
                 fontSize = 50.sp
             )
-            Spacer(modifier = Modifier.height(15.dp))
+            Spacer(modifier = Modifier.height(25.dp))
             Box(modifier = Modifier
                 .fillMaxWidth()
                 .fillMaxHeight()
