@@ -40,12 +40,12 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import com.example.baoiaminventoryapp.R
 
-
+// Firebase auth and Navcontroller to be inserted.
 @OptIn(ExperimentalMaterial3Api::class)
 @Preview (showBackground = true, showSystemUi = true)
 @Composable
 fun LoginPage() {
-    val empolyeeID = remember { //emlpyee ID assigned be admin, can also use registered mobile number for more ease
+    val empolyeeID = remember { //emlpyee ID assigned by admin, can also use registered mobile number for more ease
         mutableStateOf("")
     }
     val password = remember {
@@ -58,7 +58,7 @@ fun LoginPage() {
     Box(modifier = Modifier
         .fillMaxSize()
         .background(color = Color.White)
-        .padding(WindowInsets.statusBars.asPaddingValues())
+        .padding(WindowInsets.statusBars.asPaddingValues()) //gathers the info about the notch
     ) {
         Column (horizontalAlignment = Alignment.CenterHorizontally){
             Spacer(modifier = Modifier.height(10.dp))
@@ -177,7 +177,7 @@ fun LoginPage() {
                     )
                     Spacer(modifier = Modifier.height(30.dp))
                     Button(
-                        onClick = {},
+                        onClick = {}, //navcontroller to be integrated after firebase auth
                         shape = RoundedCornerShape(10.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
                         modifier = Modifier
