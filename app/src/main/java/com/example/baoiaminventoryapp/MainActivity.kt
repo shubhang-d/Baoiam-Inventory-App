@@ -5,43 +5,45 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.Navigation
+import androidx.navigation.compose.rememberNavController
+import com.example.baoiaminventoryapp.Screeens.NavigationScript
 import com.example.baoiaminventoryapp.ui.theme.BaoiamInventoryAppTheme
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.FirebaseUser
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 class MainActivity : ComponentActivity() {
+    private val auth: FirebaseAuth by lazy { Firebase.auth }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        enableEdgeToEdge()
+        var currentUser = auth.currentUser
         setContent {
             BaoiamInventoryAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android  Project",
-                        modifier = Modifier.padding(innerPadding)
-                    )
+                Surface(modifier = Modifier.fillMaxSize()) {
+                    val navController = rememberNavController()
+                    NavigationScript(auth, navController, currentUser, onSignedIn = {signedInUser->
+                        currentUser = signedInUser
+
+                    })
+
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
+
+private fun onSignInError(errorMessage: String) {
+    // Handle the sign-in error as needed
+    // For now, we'll print the error message
+    println("Sign-in error: $errorMessage")
 }
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    BaoiamInventoryAppTheme {
-        Greeting("Android")
-    }
-}
+

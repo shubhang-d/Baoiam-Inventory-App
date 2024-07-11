@@ -64,6 +64,11 @@ dependencies {
     //Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
+    implementation(libs.androidx.constraintlayout.compose)
+    implementation(libs.firebase.auth)
+    implementation(libs.androidx.navigation.runtime.ktx)
+    implementation ("androidx.navigation:navigation-fragment-compose:2.8.0-beta04")
+    implementation(libs.androidx.navigation.compose)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
@@ -72,4 +77,6 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+    implementation(kotlin("script-runtime"))
+    implementation (libs.androidx.material.icons.extended)
 }
