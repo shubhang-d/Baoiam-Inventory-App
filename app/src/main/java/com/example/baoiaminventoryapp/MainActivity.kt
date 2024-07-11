@@ -21,7 +21,7 @@ class MainActivity : ComponentActivity() {
             BaoiamInventoryAppTheme {
                 Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
                     Greeting(
-                        name = "Android",
+                        name = "Android  Project",
                         modifier = Modifier.padding(innerPadding)
                     )
                 }
