@@ -42,7 +42,6 @@ import com.example.baoiaminventoryapp.R
 
 // Firebase auth and Navcontroller to be inserted.
 @OptIn(ExperimentalMaterial3Api::class)
-@Preview (showBackground = true, showSystemUi = true)
 @Composable
 fun LoginPage() {
     val empolyeeID = remember { //emlpyee ID assigned by admin, can also use registered mobile number for more ease
@@ -190,4 +189,10 @@ fun LoginPage() {
             }
         }
     }
+}
+
+@Preview (showBackground = true, showSystemUi = true)
+@Composable
+fun LoginPagePreview(){
+    LoginPage()
 }
