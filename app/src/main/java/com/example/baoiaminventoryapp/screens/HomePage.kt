@@ -115,6 +115,13 @@ fun HomePage(dataOfQR: String) {
                         )
                     }
                     Spacing(height = 20)
+                    CustomButton(
+                        label = "Submit",
+                        color = Color.Black,
+                        height = 50,
+                        width = 200,
+                        onClick = {}
+                    )
                 }
             }
         }
