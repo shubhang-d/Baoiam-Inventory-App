@@ -1,6 +1,5 @@
 package com.example.baoiaminventoryapp.Screeens
 
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -34,6 +33,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.TextStyle
 import androidx.navigation.NavController
@@ -48,6 +48,8 @@ fun LoginPage(auth: FirebaseAuth,
               onSignedIn: (FirebaseUser?) -> Unit,
               navController: NavController
 ) {
+    val coroutineScope = rememberCoroutineScope()
+    val offsetX = remember{ androidx.compose.animation.core.Animatable(0f) }
     var employeeID by remember {
         //employee ID assigned by admin, can also use registered mobile number for more ease
         mutableStateOf("")
@@ -125,7 +127,8 @@ fun LoginPage(auth: FirebaseAuth,
                         onValueChange = {employeeID = it},
                         modifier = Modifier
                             .padding(horizontal = 30.dp)
-                            .fillMaxWidth(),
+                            .fillMaxWidth()
+                            .offset(x = offsetX.value.dp),
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Text,
@@ -165,7 +168,8 @@ fun LoginPage(auth: FirebaseAuth,
                         label = { Text(text = "Password")},
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = 30.dp),
+                            .padding(horizontal = 30.dp)
+                            .offset(x = offsetX.value.dp),
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Password,
@@ -216,6 +220,7 @@ fun LoginPage(auth: FirebaseAuth,
                             text = myErrorMessage!!,
                             color = Color(0xFF7C0A02),
                             fontSize = 18.sp,
+                            modifier = Modifier.offset(x = offsetX.value.dp)
                         )
                     }
                     Spacer(modifier = Modifier.height(30.dp))
@@ -230,7 +235,9 @@ fun LoginPage(auth: FirebaseAuth,
                                         // Show toast message on sign-in error
                                         myErrorMessage = errorMessage
                                     },
-                                    navController = navController
+                                    navController = navController,
+                                    coroutineScope,
+                                    offsetX
                                 )
                             }
                         }, //navigation controller to be integrated after firebase auth
