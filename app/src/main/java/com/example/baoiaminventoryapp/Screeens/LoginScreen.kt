@@ -128,7 +128,7 @@ fun LoginPage(auth: FirebaseAuth,
                             .fillMaxWidth(),
                         singleLine = true,
                         keyboardOptions = KeyboardOptions(
-                            keyboardType = KeyboardType.Number,
+                            keyboardType = KeyboardType.Text,
                             imeAction = ImeAction.Next,
                         ),
                         shape = RoundedCornerShape(20.dp),
