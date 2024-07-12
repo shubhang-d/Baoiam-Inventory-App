@@ -54,7 +54,8 @@ fun LoginPage(auth: FirebaseAuth,
               onSignedIn: (FirebaseUser?) -> Unit,
               navController: NavController
 ) {
-    var employeeID by remember { //employee ID assigned by admin, can also use registered mobile number for more ease
+    var employeeID by remember {
+        //employee ID assigned by admin, can also use registered mobile number for more ease
         mutableStateOf("")
     }
     var password by remember {
@@ -132,6 +133,8 @@ fun LoginPage(auth: FirebaseAuth,
                         ),
                         shape = RoundedCornerShape(20.dp),
                         colors = OutlinedTextFieldDefaults.colors(
+                            focusedContainerColor = Color.White,
+                            unfocusedContainerColor = Color.White,
                             unfocusedBorderColor = Color.White,
                             focusedBorderColor = Color.White
                         )
@@ -178,17 +181,28 @@ fun LoginPage(auth: FirebaseAuth,
                         }
                     )
                     Spacer(modifier = Modifier.height(8.dp))
-                    Text(
-                        text = "Forget Password?",
-                        modifier = Modifier
-                            .clickable {}
-                            .align(AbsoluteAlignment.Right)
-                            .padding(end = 40.dp),
-                        style = TextStyle(
-                            fontSize = 15.sp,
-                            textDecoration = TextDecoration.Underline
+//                    Text(
+//                        text = "Forget Password?",
+//                        modifier = Modifier
+//                            .clickable {}
+//                            .align(AbsoluteAlignment.Right)
+//                            .padding(end = 40.dp),
+//                        style = TextStyle(
+//                            fontSize = 15.sp,
+//                            textDecoration = TextDecoration.Underline
+//                        )
+//                    )
+                    // Error Message
+                    Spacer(modifier = Modifier.height(8.dp))
+                    if (myErrorMessage != null) {
+                        Text(
+                            text = myErrorMessage!!,
+                            color = Color.Yellow,
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
                         )
-                    )
+                    }
                     Spacer(modifier = Modifier.height(30.dp))
                     Button(
                         onClick = {
@@ -217,19 +231,9 @@ fun LoginPage(auth: FirebaseAuth,
                     ) {
                         Text(text = "Log in")
                     }
-                    // ... (other content)
-                    Spacer(modifier = Modifier.height(16.dp))
+                    
 
-                    // Error Message
-                    if (myErrorMessage != null) {
-                        Text(
-                            text = myErrorMessage!!,
-                            color = Color.Red,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(8.dp)
-                        )
-                    }
+                    
                 }
             }
         }
