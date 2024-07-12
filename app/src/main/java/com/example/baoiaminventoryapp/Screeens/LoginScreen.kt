@@ -1,18 +1,16 @@
 package com.example.baoiaminventoryapp.Screeens
 
+
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -22,7 +20,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontFamily
@@ -38,17 +35,14 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.constraintlayout.compose.Visibility
 import androidx.navigation.NavController
 import com.example.baoiaminventoryapp.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
-// Firebase auth and Navcontroller to be inserted.
-@OptIn(ExperimentalMaterial3Api::class)
+
+// Firebase auth and Navigation controller to be inserted.
 @Composable
 fun LoginPage(auth: FirebaseAuth,
               onSignedIn: (FirebaseUser?) -> Unit,
@@ -58,9 +52,14 @@ fun LoginPage(auth: FirebaseAuth,
         //employee ID assigned by admin, can also use registered mobile number for more ease
         mutableStateOf("")
     }
+    var idError by remember {
+        //error in emailID
+        mutableStateOf("")
+    }
     var password by remember {
         mutableStateOf("")
     }
+
     var passwordVisibleStatus by remember {
         mutableStateOf(false)
     }
@@ -69,7 +68,8 @@ fun LoginPage(auth: FirebaseAuth,
 
     var myErrorMessage by remember { mutableStateOf<String?>(null) }
 
-    val colorPallete = Color(0xFFC75C85)
+
+    val colorPalette = Color(0xFFC75C85)
     Box(modifier = Modifier
         .fillMaxSize()
         .background(color = Color.White)
@@ -89,7 +89,7 @@ fun LoginPage(auth: FirebaseAuth,
                 text = "Warehouse App",
                 modifier = Modifier
                     .padding(top = 10.dp),
-                color = colorPallete,
+                color = colorPalette,
                 fontStyle = FontStyle.Normal,
                 fontFamily = FontFamily.Cursive,
                 fontSize = 50.sp
@@ -101,7 +101,7 @@ fun LoginPage(auth: FirebaseAuth,
                 .clip(
                     RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)
                 )
-                .background(color = colorPallete)
+                .background(color = colorPalette)
             ){
                 Column (horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxSize()){
@@ -132,13 +132,32 @@ fun LoginPage(auth: FirebaseAuth,
                             imeAction = ImeAction.Next,
                         ),
                         shape = RoundedCornerShape(20.dp),
+                        isError = !isValidEmail(employeeID),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedContainerColor = Color.White,
                             unfocusedContainerColor = Color.White,
                             unfocusedBorderColor = Color.White,
-                            focusedBorderColor = Color.White
+                            focusedBorderColor = Color.White,
+                            errorContainerColor = Color.White,
+                            errorBorderColor = Color(0xFF7C0A02)
                         )
                     )
+                    Spacer(modifier = Modifier.height(4.dp))
+
+                    idError = if(!isValidEmail(employeeID) and employeeID.isNotBlank()){
+                        "Please enter a valid email!"
+                    }else{
+                        ""
+                    }
+                    //employee ID error message
+                    if(idError.isNotBlank()){
+                        Text(text = idError,
+                            color = Color(0xFF7C0A02),
+                            fontSize = 15.sp)
+                    }
+
+
+
                     Spacer(modifier = Modifier.height(40.dp))
                     OutlinedTextField(
                         value = password,
@@ -152,8 +171,11 @@ fun LoginPage(auth: FirebaseAuth,
                             keyboardType = KeyboardType.Password,
                             imeAction = ImeAction.Done
                         ),
+                        isError = !isValidPassword(password),
                         shape = RoundedCornerShape(20.dp),
                         colors = OutlinedTextFieldDefaults.colors(
+                            errorContainerColor = Color.White,
+                            errorBorderColor = Color(0xFF7C0A02),
                             focusedContainerColor = Color.White,
                             unfocusedContainerColor = Color.White,
                             unfocusedBorderColor = Color.White,
@@ -180,27 +202,20 @@ fun LoginPage(auth: FirebaseAuth,
                             }
                         }
                     )
-                    Spacer(modifier = Modifier.height(8.dp))
-//                    Text(
-//                        text = "Forget Password?",
-//                        modifier = Modifier
-//                            .clickable {}
-//                            .align(AbsoluteAlignment.Right)
-//                            .padding(end = 40.dp),
-//                        style = TextStyle(
-//                            fontSize = 15.sp,
-//                            textDecoration = TextDecoration.Underline
-//                        )
-//                    )
+                    Spacer(modifier = Modifier.height(4.dp))
+                    if(!isValidPassword(password) and password.isNotBlank()){
+                        Text(text = "Please enter a valid password",
+                            color = Color(0xFF7C0A02),
+                            fontSize = 15.sp)
+                    }
+
                     // Error Message
                     Spacer(modifier = Modifier.height(8.dp))
                     if (myErrorMessage != null) {
                         Text(
                             text = myErrorMessage!!,
-                            color = Color.Yellow,
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(8.dp)
+                            color = Color(0xFF7C0A02),
+                            fontSize = 18.sp,
                         )
                     }
                     Spacer(modifier = Modifier.height(30.dp))
@@ -217,12 +232,8 @@ fun LoginPage(auth: FirebaseAuth,
                                     },
                                     navController = navController
                                 )
-                            } else {
-//                                signUp(auth, employeeID, password, firstName, lastName, { signedInUser: FirebaseUser ->
-//                                    onSignedIn(signedInUser)
-//                                }, navController)
                             }
-                        }, //navcontroller to be integrated after firebase auth
+                        }, //navigation controller to be integrated after firebase auth
                         shape = RoundedCornerShape(10.dp),
                         colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
                         modifier = Modifier
@@ -239,9 +250,3 @@ fun LoginPage(auth: FirebaseAuth,
         }
     }
 }
-//
-//@Preview (showBackground = true, showSystemUi = true)
-//@Composable
-////fun LoginPagePreview(){
-//////
-////}
