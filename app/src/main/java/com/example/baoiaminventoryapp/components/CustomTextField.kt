@@ -47,7 +47,9 @@ fun CustomTextField(label:String = "", passwordField:Boolean = false, modifier: 
             disabledContainerColor = Color.LightGray,
             errorContainerColor = Color.Transparent,
             focusedBorderColor = Color.LightGray,
-            unfocusedBorderColor = Color.LightGray
+            unfocusedBorderColor = Color.LightGray,
+            unfocusedLabelColor = Color.DarkGray,
+            focusedLabelColor = Color.White,
         ),
         visualTransformation = if (passwordField && !passwordVisibleStatus.value) {
             PasswordVisualTransformation()

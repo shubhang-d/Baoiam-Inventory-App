@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.baoiaminventoryapp.screens.LoginPage
+import com.example.baoiaminventoryapp.screens.navHost
 import com.example.baoiaminventoryapp.ui.theme.BaoiamInventoryAppTheme
 
 class MainActivity : ComponentActivity() {
@@ -20,7 +21,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             BaoiamInventoryAppTheme {
-                LoginPage()
+                navHost()
             }
         }
     }

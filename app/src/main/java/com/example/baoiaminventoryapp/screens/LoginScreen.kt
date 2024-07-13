@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
+import androidx.navigation.NavController
 import com.example.baoiaminventoryapp.components.CustomButton
 import com.example.baoiaminventoryapp.components.CustomTextField
 import com.example.baoiaminventoryapp.components.DivueensLogo
@@ -27,9 +28,9 @@ import com.example.baoiaminventoryapp.components.EnclosingBox
 import com.example.baoiaminventoryapp.components.Spacing
 
 // Firebase auth and Navcontroller to be inserted.
-@Preview (showBackground = true, showSystemUi = true)
+//@Preview (showBackground = true, showSystemUi = true)
 @Composable
-fun LoginPage() {
+fun LoginPage(navController: NavController) {
     //emlpyee ID assigned by admin, can also use registered mobile number for more ease
     val colorPallete = Color(0xFFC75C85)
 
@@ -76,19 +77,8 @@ fun LoginPage() {
                             .fillMaxWidth()
                         )
                     Spacing(height = 8)
-                    Text(
-                        text = "Forget Password?",
-                        modifier = Modifier
-                            .clickable {}
-                            .align(AbsoluteAlignment.Right)
-                            .padding(end = 40.dp),
-                        style = TextStyle(
-                            fontSize = 15.sp,
-                            textDecoration = TextDecoration.Underline
-                        )
-                    )
                     Spacing(height = 30)
-                    CustomButton(label = "Log in", color = Color.Black, height = 50, width = 150, onClick = {})
+                    CustomButton(label = "Log in", color = Color.Black, height = 50, width = 150, onClick = {navController.navigate("home")})
                 }
             }
         }

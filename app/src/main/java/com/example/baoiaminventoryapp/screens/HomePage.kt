@@ -22,6 +22,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
 import com.example.baoiaminventoryapp.components.CustomButton
 import com.example.baoiaminventoryapp.components.CustomTextField
 import com.example.baoiaminventoryapp.components.DivueensLogo
@@ -31,7 +32,7 @@ import com.example.baoiaminventoryapp.components.Spacing
 import com.example.baoiaminventoryapp.components.SubmitButton
 
 @Composable
-fun HomePage(dataOfQR: String) {
+fun HomePage(dataOfQR: String, navController: NavController) {
     val scannedLines = dataOfQR.split("\n")
     val colorPallete = Color(0xFFC75C85)
 
@@ -51,7 +52,7 @@ fun HomePage(dataOfQR: String) {
                     label = "Log out",
                     color = Color.Black,
                     height = 40, width = 120,
-                    onClick = {}
+                    onClick = {navController.navigate("login")}
                 )
                 CustomButton(
                     label = "Start Scanning",
@@ -109,8 +110,8 @@ fun HomePage(dataOfQR: String) {
     }
 }
 
-@Preview (showBackground = true, showSystemUi = true)
-@Composable
-fun HomePagePreview() {
-    HomePage(dataOfQR = "name: john wick \nproduct: sample product \nExpiry date: 01/01/2026 \nFragile product: yes \nproduct id:123456789")
-}
+//@Preview (showBackground = true, showSystemUi = true)
+//@Composable
+//fun HomePagePreview() {
+//    HomePage(dataOfQR = "name: john wick \nproduct: sample product \nExpiry date: 01/01/2026 \nFragile product: yes \nproduct id:123456789")
+//}
