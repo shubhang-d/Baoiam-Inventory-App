@@ -10,10 +10,12 @@ activityCompose = "1.9.0"
 composeBom = "2024.04.01"
 googleServicesVerion = "4.4.2"
 firebaseBomVersion = "33.1.1"
+lifecycleRuntimeKtxVersion = "2.5.1"
 daggerHiltVersion = "2.48"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
+androidx-lifecycle-runtime-ktx-v251 = { module = "androidx.lifecycle:lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtxVersion" }
 junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }

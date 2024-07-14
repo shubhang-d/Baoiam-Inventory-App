@@ -7,7 +7,9 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import com.example.baoiaminventoryapp.presentation.MainScreen
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.baoiaminventoryapp.screens.LoginPage
+import com.example.baoiaminventoryapp.screens.navHost
 import com.example.baoiaminventoryapp.ui.theme.BaoiamInventoryAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -17,13 +19,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            BaoiamInventoryAppTheme  {
-                Surface(modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background) {
-                    MainScreen()
-                }
+            BaoiamInventoryAppTheme {
+                navHost()
             }
         }
     }
 }
-
