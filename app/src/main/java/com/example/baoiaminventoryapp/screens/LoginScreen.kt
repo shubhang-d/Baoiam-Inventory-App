@@ -9,6 +9,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -19,6 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontFamily
@@ -40,6 +45,16 @@ import androidx.navigation.NavController
 import com.example.baoiaminventoryapp.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import androidx.compose.ui.AbsoluteAlignment
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.baoiaminventoryapp.components.CustomButton
+import com.example.baoiaminventoryapp.components.CustomTextField
+import com.example.baoiaminventoryapp.components.DivueensLogo
+import com.example.baoiaminventoryapp.components.EnclosingBox
+import com.example.baoiaminventoryapp.components.Spacing
 
 
 // Firebase auth and Navigation controller to be inserted.
@@ -79,14 +94,7 @@ fun LoginPage(auth: FirebaseAuth,
     ) {
         Column (horizontalAlignment = Alignment.CenterHorizontally){
             Spacer(modifier = Modifier.height(10.dp))
-            Image(
-                painter = painterResource(id = R.drawable.ic_launcher_foreground),
-                contentDescription = "Company_logo",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(170.dp)
-                    .padding(top = 10.dp)
-            )
+            DivueensLogo()
             Text(
                 text = "Warehouse App",
                 modifier = Modifier
@@ -97,14 +105,8 @@ fun LoginPage(auth: FirebaseAuth,
                 fontSize = 50.sp
             )
             Spacer(modifier = Modifier.height(25.dp))
-            Box(modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .clip(
-                    RoundedCornerShape(topStart = 30.dp, topEnd = 30.dp)
-                )
-                .background(color = colorPalette)
-            ){
+          
+            EnclosingBox {
                 Column (horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxSize()){
                     Spacer(modifier = Modifier.height(20.dp))
@@ -224,8 +226,11 @@ fun LoginPage(auth: FirebaseAuth,
                         )
                     }
                     Spacer(modifier = Modifier.height(30.dp))
-                    Button(
-                        onClick = {
+                    CustomButton(label = "Log in",
+                                 color = Color.Black,
+                                 height = 50,
+                                 width = 150,
+                                 onClick = {
                             if (isSignIn) {
                                 signIn(auth, employeeID , password,
                                     onSignedIn = { signedInUser: FirebaseUser ->
@@ -240,20 +245,16 @@ fun LoginPage(auth: FirebaseAuth,
                                     offsetX
                                 )
                             }
-                        }, //navigation controller to be integrated after firebase auth
-                        shape = RoundedCornerShape(10.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
-                        modifier = Modifier
-                            .height(50.dp)
-                            .width(150.dp)
-                    ) {
-                        Text(text = "Log in")
-                    }
-                    
-
+                              )
                     
                 }
             }
         }
     }
+}
+
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun LoginPagePreview(){
+    LoginPage(navController = rememberNavController())
 }

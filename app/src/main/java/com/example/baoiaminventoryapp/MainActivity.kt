@@ -12,7 +12,15 @@ import com.example.baoiaminventoryapp.ui.theme.BaoiamInventoryAppTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.ui.tooling.preview.Preview
+import com.example.baoiaminventoryapp.screens.LoginPage
+import com.example.baoiaminventoryapp.screens.navHost
+import com.example.baoiaminventoryapp.ui.theme.BaoiamInventoryAppTheme
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
     private val auth: FirebaseAuth by lazy { Firebase.auth }
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -39,5 +47,3 @@ private fun onSignInError(errorMessage: String) {
     // For now, we'll print the error message
     println("Sign-in error: $errorMessage")
 }
-
-

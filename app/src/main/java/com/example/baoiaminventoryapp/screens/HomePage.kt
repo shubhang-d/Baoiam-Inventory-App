@@ -36,6 +36,24 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.baoiaminventoryapp.R
 import com.google.firebase.auth.FirebaseAuth
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.example.baoiaminventoryapp.components.CustomButton
+import com.example.baoiaminventoryapp.components.CustomTextField
+import com.example.baoiaminventoryapp.components.DivueensLogo
+import com.example.baoiaminventoryapp.components.EnclosingBox
+import com.example.baoiaminventoryapp.components.HeaderText
+import com.example.baoiaminventoryapp.components.Spacing
+import com.example.baoiaminventoryapp.components.SubmitButton
 
 
 @Composable
@@ -126,4 +144,5 @@ fun HomePage(auth: FirebaseAuth, navController: NavController, context: Context)
             }
         }
     }
+
 }
