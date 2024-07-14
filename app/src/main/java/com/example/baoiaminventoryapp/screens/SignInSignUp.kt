@@ -1,16 +1,13 @@
-package com.example.baoiaminventoryapp.Screeens
+package com.example.baoiaminventoryapp.screens
 
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineScope
-import kotlin.contracts.contract
 
 fun signIn(
     auth: FirebaseAuth,

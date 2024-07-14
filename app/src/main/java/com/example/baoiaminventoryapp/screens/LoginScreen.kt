@@ -1,4 +1,4 @@
-package com.example.baoiaminventoryapp.Screeens
+package com.example.baoiaminventoryapp.screens
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

@@ -1,4 +1,4 @@
-package com.example.baoiaminventoryapp.Screeens
+package com.example.baoiaminventoryapp.screens
 
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D

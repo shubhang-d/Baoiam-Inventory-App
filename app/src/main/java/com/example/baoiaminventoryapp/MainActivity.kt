@@ -3,19 +3,13 @@ package com.example.baoiaminventoryapp
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
-import androidx.navigation.Navigation
 import androidx.navigation.compose.rememberNavController
-import com.example.baoiaminventoryapp.Screeens.NavigationScript
+import com.example.baoiaminventoryapp.screens.NavigationScript
 import com.example.baoiaminventoryapp.ui.theme.BaoiamInventoryAppTheme
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 

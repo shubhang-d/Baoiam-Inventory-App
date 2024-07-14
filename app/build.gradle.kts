@@ -69,6 +69,7 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation ("androidx.navigation:navigation-fragment-compose:2.8.0-beta04")
     implementation(libs.androidx.navigation.compose)
+    implementation(libs.firebase.auth.ktx)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
