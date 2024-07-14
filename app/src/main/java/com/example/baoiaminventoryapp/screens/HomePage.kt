@@ -1,10 +1,14 @@
 package com.example.baoiaminventoryapp.screens
 
+import android.content.Context
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +17,25 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.baoiaminventoryapp.R
+import com.google.firebase.auth.FirebaseAuth
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -32,91 +55,94 @@ import com.example.baoiaminventoryapp.components.HeaderText
 import com.example.baoiaminventoryapp.components.Spacing
 import com.example.baoiaminventoryapp.components.SubmitButton
 
-@Composable
-fun HomePage(dataOfQR: String, navController: NavController) {
-    val scannedLines = dataOfQR.split("\n")
-    val colorPallete = Color(0xFFC75C85)
 
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(color = Color.White)
-        .padding(WindowInsets.statusBars.asPaddingValues())
+@Composable
+fun HomePage(auth: FirebaseAuth, navController: NavController, context: Context) {
+    val dataOfQR = remember {
+        mutableStateOf<String?>("name: john wick \nage: idk honestly \nis he cool: hell yeah") //QR code data get here in the from of a string
+    }
+    val scannedLines = dataOfQR.value?.split("\n") ?: listOf() // Handling null value
+
+    /*
+    * the data gets scanned in the from of string i bilieve
+    * the incoming data gets split with the newline chracter, as we have no concrete idea of how many lines of info the qr will carry,
+    * so we need a dynamic behavior of the information display. */
+
+    val headerText = if (true /* QR code detected*/) { //checks wht heading text to display (the one directly below the scan area)
+        "No barcode detected"
+    } else {
+        "Barcode infromation"
+    }
+
+    val colorPallete = Color(0xFFC75C85)
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.White)
+            .padding(WindowInsets.statusBars.asPaddingValues())
     ){
         Column (horizontalAlignment = Alignment.CenterHorizontally){
-            Row (verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween,
+            Spacer(modifier = Modifier.height(10.dp))
+            Row (
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(start = 20.dp, end = 10.dp, top = 30.dp)
-            ) {
-                CustomButton(
-                    label = "Log out",
-                    color = Color.Black,
-                    height = 40, width = 120,
-                    onClick = {navController.navigate("login")}
+                    .height(70.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ){
+                Image(
+                    painter = painterResource(id = R.drawable.ic_launcher_foreground),
+                    contentDescription = "Divueens",
+                    contentScale = ContentScale.Fit
                 )
-                CustomButton(
-                    label = "Start Scanning",
-                    color = colorPallete,
-                    height = 40, width = 160,
-                    onClick = {}
-                )
-            }
-            Spacing(height = 20)
-            DivueensLogo()
-            Spacing(height = 20)
-            EnclosingBox {
-                Column(
+                Button(
+                    onClick = {
+                        logout(auth, navController, context)
+                    },
+                    shape = RoundedCornerShape(10.dp),
+                    colors = ButtonDefaults.buttonColors(containerColor = colorPallete),
                     modifier = Modifier
-                        .fillMaxWidth()
+                        .height(40.dp)
+                        .width(120.dp)
+                        .padding(end = 15.dp)
                 ) {
-                    Spacing(height = 30)
-                    HeaderText(modifier = Modifier.align(Alignment.CenterHorizontally)) // I dont like this at all I will replace/ make it look better later
-                    Spacing(height = 20)
-                    scannedLines.forEach { line ->
-                        val colonSeperatedLines = line.split(":")
-                        Row {
-                            Text(
-                                text = colonSeperatedLines[0] + ": ",
-                                fontWeight = FontWeight.Bold,
-                                fontSize = 25.sp,
-                                modifier = Modifier.padding(start = 15.dp, bottom = 8.dp)
-                            )
-                            Text(
-                                text = colonSeperatedLines[1],
-                                fontSize = 25.sp,
-                                modifier = Modifier.padding(bottom = 8.dp)
-                            )
-                        }
-                    }
-                    Spacing(height = 5)
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Spacing(width = 15)
+                    Text(text = "Log out")
+                }
+            }
+            Spacer(modifier = Modifier.height(50.dp)) //isolating the barcode area for enhance visibility
+            Box(modifier = Modifier
+                .padding(horizontal = 20.dp)
+                .clip(RoundedCornerShape(20.dp))
+                .fillMaxWidth()
+                .height(200.dp)
+                .background(color = Color.Black)
+            ){
+                //barcode scan area
+            }
+            Spacer(modifier = Modifier.height(30.dp)) //isolating the barcode area for enhance visibility
+            Text(text = headerText, fontSize = 25.sp, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace)
+            Spacer(modifier = Modifier.height(20.dp))
+            Column (modifier = Modifier.fillMaxWidth()){
+                scannedLines.forEach { line ->
+                    val colonSeperatedLines = line.split(":")
+                    Row {
                         Text(
-                            text = "Aisle no.: ",
+                            text = colonSeperatedLines[0]+": ",
                             fontWeight = FontWeight.Bold,
                             fontSize = 25.sp
                         )
-                        CustomTextField(
-                            modifier = Modifier
-                                .height(25.dp)
-                                .width(150.dp)
+                        Text(
+                            text = colonSeperatedLines[1],
+                            fontSize = 25.sp
                         )
                     }
-                    Spacing(height = 30)
-                    SubmitButton()
                 }
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+            Row{
+                Text(text = "Aisle nnumber: ")
             }
         }
     }
-}
 
-@Preview (showBackground = true, showSystemUi = true)
-@Composable
-fun HomePagePreview() {
-    HomePage(dataOfQR = "name: john wick \n" +
-            "product: sample product \n" +
-            "Expiry date: 01/01/2026 \n" +
-            "Fragile product: yes \n" +
-            "product id:123456789", rememberNavController())
 }
