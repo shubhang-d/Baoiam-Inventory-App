@@ -21,6 +21,7 @@ import androidx.compose.ui.AbsoluteAlignment
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.baoiaminventoryapp.components.CustomButton
 import com.example.baoiaminventoryapp.components.CustomTextField
 import com.example.baoiaminventoryapp.components.DivueensLogo
@@ -83,4 +84,10 @@ fun LoginPage(navController: NavController) {
             }
         }
     }
+}
+
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun LoginPagePreview(){
+    LoginPage(navController = rememberNavController())
 }

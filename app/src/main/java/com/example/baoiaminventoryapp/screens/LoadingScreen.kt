@@ -15,6 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.baoiaminventoryapp.R
 import kotlinx.coroutines.delay
 
@@ -28,7 +29,9 @@ fun LoadingScreen(navController: NavController) {
             popUpTo("splash") {inclusive = true}
         }
     }
-    Box(modifier = Modifier.fillMaxSize().background(color = Color.White)) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(color = Color.White)) {
         Image(
             painter = painterResource(id = R.drawable.divueenscropped),
             contentDescription = "Company_Logo",
@@ -37,4 +40,10 @@ fun LoadingScreen(navController: NavController) {
                 .size(220.dp)
         )
     }
+}
+
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun LoadingScreenPreview(){
+    LoadingScreen(navController = rememberNavController())
 }

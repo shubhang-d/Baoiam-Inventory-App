@@ -23,6 +23,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import com.example.baoiaminventoryapp.components.CustomButton
 import com.example.baoiaminventoryapp.components.CustomTextField
 import com.example.baoiaminventoryapp.components.DivueensLogo
@@ -110,8 +111,12 @@ fun HomePage(dataOfQR: String, navController: NavController) {
     }
 }
 
-//@Preview (showBackground = true, showSystemUi = true)
-//@Composable
-//fun HomePagePreview() {
-//    HomePage(dataOfQR = "name: john wick \nproduct: sample product \nExpiry date: 01/01/2026 \nFragile product: yes \nproduct id:123456789")
-//}
+@Preview (showBackground = true, showSystemUi = true)
+@Composable
+fun HomePagePreview() {
+    HomePage(dataOfQR = "name: john wick \n" +
+            "product: sample product \n" +
+            "Expiry date: 01/01/2026 \n" +
+            "Fragile product: yes \n" +
+            "product id:123456789", rememberNavController())
+}
