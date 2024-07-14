@@ -2,6 +2,9 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.jetbrains.kotlin.android)
     alias(libs.plugins.google.services)
+    id("kotlin-kapt")
+    alias(libs.plugins.dagger.hilt)
+
 }
 
 android {
@@ -64,6 +67,20 @@ dependencies {
     //Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.analytics)
+
+    // Coroutine Lifecycle Scopes
+    implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")
+
+    //Dagger - Hilt
+    implementation("com.google.dagger:hilt-android:2.48")
+    kapt("com.google.dagger:hilt-compiler:2.48")
+    kapt("androidx.hilt:hilt-compiler:1.0.0")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
+
+
+
+    //bar code scanner
+    implementation("com.google.android.gms:play-services-code-scanner:16.0.0-beta3")
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
