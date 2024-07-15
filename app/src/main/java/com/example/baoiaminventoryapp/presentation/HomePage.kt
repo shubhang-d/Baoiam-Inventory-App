@@ -1,4 +1,4 @@
-package com.example.baoiaminventoryapp.screens
+package com.example.baoiaminventoryapp.presentation
 
 import android.content.Context
 import androidx.compose.ui.text.font.FontFamily
@@ -21,47 +21,33 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.baoiaminventoryapp.R
 import com.google.firebase.auth.FirebaseAuth
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
-import com.example.baoiaminventoryapp.components.CustomButton
-import com.example.baoiaminventoryapp.components.CustomTextField
-import com.example.baoiaminventoryapp.components.DivueensLogo
-import com.example.baoiaminventoryapp.components.EnclosingBox
-import com.example.baoiaminventoryapp.components.HeaderText
-import com.example.baoiaminventoryapp.components.Spacing
-import com.example.baoiaminventoryapp.components.SubmitButton
-
 
 @Composable
-fun HomePage(auth: FirebaseAuth, navController: NavController, context: Context) {
+fun HomePage(viewModel: MainViewModel = hiltViewModel(), auth: FirebaseAuth, navController: NavController, context: Context) {
     val dataOfQR = remember {
         mutableStateOf<String?>("name: john wick \nage: idk honestly \nis he cool: hell yeah") //QR code data get here in the from of a string
     }
     val scannedLines = dataOfQR.value?.split("\n") ?: listOf() // Handling null value
+    val state = viewModel.state.collectAsState()
 
     /*
     * the data gets scanned in the from of string i bilieve
@@ -122,27 +108,44 @@ fun HomePage(auth: FirebaseAuth, navController: NavController, context: Context)
             Spacer(modifier = Modifier.height(30.dp)) //isolating the barcode area for enhance visibility
             Text(text = headerText, fontSize = 25.sp, fontWeight = FontWeight.Bold, fontFamily = FontFamily.Monospace)
             Spacer(modifier = Modifier.height(20.dp))
-            Column (modifier = Modifier.fillMaxWidth()){
-                scannedLines.forEach { line ->
-                    val colonSeperatedLines = line.split(":")
-                    Row {
-                        Text(
-                            text = colonSeperatedLines[0]+": ",
-                            fontWeight = FontWeight.Bold,
-                            fontSize = 25.sp
-                        )
-                        Text(
-                            text = colonSeperatedLines[1],
-                            fontSize = 25.sp
-                        )
-                    }
-                }
-            }
+//            Column (modifier = Modifier.fillMaxWidth()){
+//                scannedLines.forEach { line ->
+//                    val colonSeparatedLines = line.split(":")
+//                    Row {
+//                        Text(
+//                            text = colonSeparatedLines[0]+": ",
+//                            fontWeight = FontWeight.Bold,
+//                            fontSize = 25.sp
+//                        )
+//                        Text(
+//                            text = colonSeparatedLines[1],
+//                            fontSize = 25.sp
+//                        )
+//                    }
+//                }
+//            }
+            Text(text = state.value.details)
             Spacer(modifier = Modifier.height(20.dp))
             Row{
-                Text(text = "Aisle nnumber: ")
+                Text(text = "Aisle number: ")
+            }
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(0.5f), contentAlignment = Alignment.BottomCenter
+            ) {
+                Button(onClick = { viewModel.startScanning() }) {
+                    Text(text = "Start Scanning")
+                }
             }
         }
     }
+}
 
+@Preview(showSystemUi = true, showBackground = true)
+@Composable
+fun HomePagePreview(){
+    HomePage(auth = FirebaseAuth.getInstance(),
+        navController = NavController(LocalContext.current),
+        context = LocalContext.current)
 }

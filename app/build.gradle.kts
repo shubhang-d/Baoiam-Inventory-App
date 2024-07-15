@@ -105,3 +105,7 @@ dependencies {
     implementation(kotlin("script-runtime"))
     implementation (libs.androidx.material.icons.extended)
 }
+
+kapt {
+    correctErrorTypes = true
+}

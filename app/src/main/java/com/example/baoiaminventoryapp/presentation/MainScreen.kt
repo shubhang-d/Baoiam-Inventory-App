@@ -1,5 +1,6 @@
 package com.example.baoiaminventoryapp.presentation
 
+import android.content.Context
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -11,20 +12,35 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavController
 import com.example.baoiaminventoryapp.R
+import com.google.firebase.auth.FirebaseAuth
+
 
 @Composable
-fun MainScreen(viewModel: MainViewModel = hiltViewModel()) {
+fun MainScreen(viewModel: MainViewModel = hiltViewModel(), auth: FirebaseAuth, navController: NavController, context: Context) {
+    val dataOfQR = remember {
+        mutableStateOf<String?>("name: john wick \nage: idk honestly \nis he cool: hell yeah") //QR code data get here in the from of a string
+    }
+    val scannedLines = dataOfQR.value?.split("\n") ?: listOf() // Handling null value
     val state = viewModel.state.collectAsState()
-
+    val headerText = if (true /* QR code detected*/) { //checks wht heading text to display (the one directly below the scan area)
+        "No barcode detected"
+    } else {
+        "Barcode infromation"
+    }
+    val colorPallete = Color(0xFFC75C85)
 
     Column(
         modifier = Modifier
@@ -130,3 +146,9 @@ fun DetailRow(label: String, value: String, content: @Composable () -> Unit = { 
         content()
     }
 }
+
+//@Preview(showBackground = true, showSystemUi = true)
+//@Composable
+//fun MainScreenPreview() {
+//    MainScreen()
+//}
