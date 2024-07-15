@@ -1,10 +1,11 @@
-package com.example.baoiaminventoryapp.screens
+package com.example.baoiaminventoryapp.presentation
 
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.navigation.NavController
+import com.example.baoiaminventoryapp.animation.onLoginError
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import kotlinx.coroutines.CoroutineScope
@@ -32,6 +33,7 @@ fun signIn(
             }
         }
 }
+
 //fun signUp(
 //    auth: FirebaseAuth,
 //    email: String,

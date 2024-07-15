@@ -1,6 +1,5 @@
-package com.example.baoiaminventoryapp.screens
+package com.example.baoiaminventoryapp.presentation
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -9,21 +8,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.text.font.FontFamily
@@ -34,27 +26,17 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.text.TextStyle
 import androidx.navigation.NavController
-import com.example.baoiaminventoryapp.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import androidx.compose.ui.AbsoluteAlignment
-import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.baoiaminventoryapp.components.CustomButton
-import com.example.baoiaminventoryapp.components.CustomTextField
 import com.example.baoiaminventoryapp.components.DivueensLogo
 import com.example.baoiaminventoryapp.components.EnclosingBox
-import com.example.baoiaminventoryapp.components.Spacing
 
 
 // Firebase auth and Navigation controller to be inserted.
@@ -231,30 +213,31 @@ fun LoginPage(auth: FirebaseAuth,
                                  height = 50,
                                  width = 150,
                                  onClick = {
-                            if (isSignIn) {
-                                signIn(auth, employeeID , password,
-                                    onSignedIn = { signedInUser: FirebaseUser ->
-                                        onSignedIn(signedInUser)
-                                    },
-                                    onSignInError = { errorMessage: String ->
-                                        // Show toast message on sign-in error
-                                        myErrorMessage = errorMessage
-                                    },
-                                    navController = navController,
-                                    coroutineScope,
-                                    offsetX
-                                )
-                            }
-                              )
-                    
+                                     if (isSignIn) {
+                                         signIn(
+                                             auth, employeeID, password,
+                                             onSignedIn = { signedInUser: FirebaseUser ->
+                                                 onSignedIn(signedInUser)
+                                             },
+                                             onSignInError = { errorMessage: String ->
+                                                 // Show toast message on sign-in error
+                                                 myErrorMessage = errorMessage
+                                             },
+                                             navController = navController,
+                                             coroutineScope,
+                                             offsetX
+                                         )
+                                     }
+                                 }
+                    )
                 }
             }
         }
     }
 }
 
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun LoginPagePreview(){
-    LoginPage(navController = rememberNavController())
-}
+//@Preview(showSystemUi = true, showBackground = true)
+//@Composable
+//fun LoginPagePreview(){
+//    LoginPage(navController = rememberNavController())
+//}

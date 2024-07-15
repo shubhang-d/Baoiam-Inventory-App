@@ -1,4 +1,4 @@
-package com.example.baoiaminventoryapp.screens
+package com.example.baoiaminventoryapp.presentation
 
 import android.util.Patterns
 

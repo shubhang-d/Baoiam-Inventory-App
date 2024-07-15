@@ -1,10 +1,12 @@
-package com.example.baoiaminventoryapp.screens
+package com.example.baoiaminventoryapp.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import com.example.baoiaminventoryapp.presentation.HomePage
+import com.example.baoiaminventoryapp.presentation.LoginPage
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 
@@ -26,10 +28,10 @@ fun NavigationScript(auth: FirebaseAuth,
             LoginPage(auth, onSignedIn = onSignedIn,  navController = navController)
         }
         composable(route = "home"){
-            HomePage(auth, navController, context)
+            HomePage(auth = auth, navController = navController, context = context)
         }
         composable(route = "enter"){
-            LoadingScreen()
+            com.example.baoiaminventoryapp.screens.LoadingScreen()
         }
     }
 }
