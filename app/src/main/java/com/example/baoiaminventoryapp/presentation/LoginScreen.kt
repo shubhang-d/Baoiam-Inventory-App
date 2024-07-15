@@ -27,6 +27,7 @@ import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.OutlinedTextFieldDefaults
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -38,8 +39,6 @@ import com.example.baoiaminventoryapp.components.CustomButton
 import com.example.baoiaminventoryapp.components.DivueensLogo
 import com.example.baoiaminventoryapp.components.EnclosingBox
 
-
-// Firebase auth and Navigation controller to be inserted.
 @Composable
 fun LoginPage(auth: FirebaseAuth,
               onSignedIn: (FirebaseUser?) -> Unit,
@@ -69,10 +68,11 @@ fun LoginPage(auth: FirebaseAuth,
 
 
     val colorPalette = Color(0xFFC75C85)
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(color = Color.White)
-        .padding(WindowInsets.statusBars.asPaddingValues()) //gathers the info about the notch
+    Surface(color = Color.White,
+         modifier = Modifier
+            .fillMaxSize()
+            .background(color = Color.White)
+            .padding(WindowInsets.statusBars.asPaddingValues()) //gathers the info about the notch
     ) {
         Column (horizontalAlignment = Alignment.CenterHorizontally){
             Spacer(modifier = Modifier.height(10.dp))
@@ -118,6 +118,7 @@ fun LoginPage(auth: FirebaseAuth,
                             keyboardType = KeyboardType.Text,
                             imeAction = ImeAction.Next,
                         ),
+                        textStyle = TextStyle(color = Color.Black),
                         shape = RoundedCornerShape(20.dp),
                         isError = !isValidEmail(employeeID),
                         colors = OutlinedTextFieldDefaults.colors(
@@ -155,6 +156,7 @@ fun LoginPage(auth: FirebaseAuth,
                             .padding(horizontal = 30.dp)
                             .offset(x = offsetX.value.dp),
                         singleLine = true,
+                        textStyle = TextStyle(color = Color.Black),
                         keyboardOptions = KeyboardOptions(
                             keyboardType = KeyboardType.Password,
                             imeAction = ImeAction.Done
@@ -209,26 +211,26 @@ fun LoginPage(auth: FirebaseAuth,
                     }
                     Spacer(modifier = Modifier.height(30.dp))
                     CustomButton(label = "Log in",
-                                 color = Color.Black,
-                                 height = 50,
-                                 width = 150,
-                                 onClick = {
-                                     if (isSignIn) {
-                                         signIn(
-                                             auth, employeeID, password,
-                                             onSignedIn = { signedInUser: FirebaseUser ->
-                                                 onSignedIn(signedInUser)
-                                             },
-                                             onSignInError = { errorMessage: String ->
-                                                 // Show toast message on sign-in error
-                                                 myErrorMessage = errorMessage
-                                             },
-                                             navController = navController,
-                                             coroutineScope,
-                                             offsetX
-                                         )
-                                     }
-                                 }
+                         color = Color.Black,
+                         height = 50,
+                         width = 150,
+                         onClick = {
+                             if (isSignIn) {
+                                 signIn(
+                                     auth, employeeID, password,
+                                     onSignedIn = { signedInUser: FirebaseUser ->
+                                         onSignedIn(signedInUser)
+                                     },
+                                     onSignInError = { errorMessage: String ->
+                                         // Show toast message on sign-in error
+                                         myErrorMessage = errorMessage
+                                     },
+                                     navController = navController,
+                                     coroutineScope,
+                                     offsetX
+                                 )
+                             }
+                         }
                     )
                 }
             }
@@ -236,8 +238,4 @@ fun LoginPage(auth: FirebaseAuth,
     }
 }
 
-//@Preview(showSystemUi = true, showBackground = true)
-//@Composable
-//fun LoginPagePreview(){
-//    LoginPage(navController = rememberNavController())
-//}
+

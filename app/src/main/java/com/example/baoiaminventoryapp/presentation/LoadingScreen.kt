@@ -6,6 +6,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.size
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -26,19 +27,19 @@ fun LoadingScreen(navController: NavController) {
     LaunchedEffect(key1 = true) {
         delay(3000)
         navController.navigate("login") {
-            popUpTo("splash") {inclusive = true}
+            popUpTo("splash") { inclusive = true }
         }
     }
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .background(color = Color.White)) {
-        Image(
-            painter = painterResource(id = R.drawable.divueenscropped),
-            contentDescription = "Company_Logo",
-            modifier = Modifier
-                .align(Alignment.Center)
-                .size(220.dp)
-        )
+    Surface(color = Color.White, modifier = Modifier.fillMaxSize().background(Color.White)) {
+        Box (modifier = Modifier.fillMaxSize()){
+            Image(
+                painter = painterResource(id = R.drawable.divueenscropped),
+                contentDescription = "Company_Logo",
+                modifier = Modifier
+                    .align(Alignment.Center)
+                    .size(220.dp)
+            )
+        }
     }
 }
 

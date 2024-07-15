@@ -21,15 +21,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         var currentUser = auth.currentUser
-        setContent {
+        setContent{
             BaoiamInventoryAppTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     val navController = rememberNavController()
                     NavigationScript(auth, navController, currentUser, onSignedIn = {signedInUser->
                         currentUser = signedInUser
-
                     })
-
                 }
             }
         }

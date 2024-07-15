@@ -43,8 +43,8 @@ fun EnclosingBox (content:@Composable () -> Unit) {
 }
 
 @Composable
-fun SubmitButton () {
-    Button(onClick = { /*TODO*/ },
+fun SubmitButton (onClick: () -> Unit) {
+    Button(onClick = onClick,
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Color.Black),
         modifier = Modifier
@@ -52,7 +52,7 @@ fun SubmitButton () {
             .padding(horizontal = 40.dp)
             .height(50.dp)
     ){
-        Text(text = "Submit", fontSize = 16.sp)
+        Text(text = "Submit", fontSize = 16.sp, color = Color.White)
     }
 }
 
@@ -64,7 +64,8 @@ fun HeaderText (qrCodeDetected: Boolean = false, modifier:Modifier) {
         fontSize = 25.sp,
         fontWeight = FontWeight.Bold,
         fontFamily = FontFamily.Monospace,
-        modifier = modifier
+        modifier = modifier,
+        color = Color.Black
     )
 }
 
