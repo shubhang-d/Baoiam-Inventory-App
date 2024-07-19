@@ -23,10 +23,10 @@ fun NavigationScript(auth: FirebaseAuth,
     NavHost(navController = navController,
         startDestination = if (currentUser != null){ "home"} else{ "login"}){
         composable(route= "login"){
-            LoginPage(auth, onSignedIn = onSignedIn, navController = navController)
+            LoginPage(auth = auth, onSignedIn = onSignedIn, navController = navController)
         }
         composable("signup"){
-            LoginPage(auth, onSignedIn = onSignedIn,  navController = navController)
+            LoginPage(auth = auth, onSignedIn = onSignedIn,  navController = navController)
         }
         composable(route = "home"){
             HomePage(auth = auth, navController = navController, context = context)

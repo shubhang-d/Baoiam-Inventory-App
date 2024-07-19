@@ -1,5 +1,6 @@
 package com.example.baoiaminventoryapp.presentation
 
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -28,10 +29,13 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -40,23 +44,14 @@ import com.example.baoiaminventoryapp.components.DivueensLogo
 import com.example.baoiaminventoryapp.components.EnclosingBox
 
 @Composable
-fun LoginPage(auth: FirebaseAuth,
+fun LoginPage(loginViewModel: LoginViewModel = viewModel(),
+              auth: FirebaseAuth,
               onSignedIn: (FirebaseUser?) -> Unit,
               navController: NavController
 ) {
+    val loginViewState by loginViewModel.uiState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
     val offsetX = remember{ androidx.compose.animation.core.Animatable(0f) }
-    var employeeID by remember {
-        //employee ID assigned by admin, can also use registered mobile number for more ease
-        mutableStateOf("")
-    }
-    var idError by remember {
-        //error in emailID
-        mutableStateOf("")
-    }
-    var password by remember {
-        mutableStateOf("")
-    }
 
     var passwordVisibleStatus by remember {
         mutableStateOf(false)
@@ -66,13 +61,15 @@ fun LoginPage(auth: FirebaseAuth,
 
     var myErrorMessage by remember { mutableStateOf<String?>(null) }
 
+    val context = LocalContext.current
+
 
     val colorPalette = Color(0xFFC75C85)
     Surface(color = Color.White,
          modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.White)
-            .padding(WindowInsets.statusBars.asPaddingValues()) //gathers the info about the notch
+             .fillMaxSize()
+             .background(color = Color.White)
+             .padding(WindowInsets.statusBars.asPaddingValues()) //gathers the info about the notch
     ) {
         Column (horizontalAlignment = Alignment.CenterHorizontally){
             Spacer(modifier = Modifier.height(10.dp))
@@ -106,9 +103,9 @@ fun LoginPage(auth: FirebaseAuth,
                     )
                     Spacer(modifier = Modifier.height(30.dp))
                     OutlinedTextField(
-                        value = employeeID,
+                        value = loginViewState.employeeID,
                         label = { Text(text = "Employee ID")},
-                        onValueChange = {employeeID = it},
+                        onValueChange = {loginViewModel.onEmployeeIDChange(it)},
                         modifier = Modifier
                             .padding(horizontal = 30.dp)
                             .fillMaxWidth()
@@ -120,7 +117,7 @@ fun LoginPage(auth: FirebaseAuth,
                         ),
                         textStyle = TextStyle(color = Color.Black),
                         shape = RoundedCornerShape(20.dp),
-                        isError = !isValidEmail(employeeID),
+                        isError = !isValidEmail(loginViewState.employeeID),
                         colors = OutlinedTextFieldDefaults.colors(
                             focusedContainerColor = Color.White,
                             unfocusedContainerColor = Color.White,
@@ -132,14 +129,16 @@ fun LoginPage(auth: FirebaseAuth,
                     )
                     Spacer(modifier = Modifier.height(4.dp))
 
-                    idError = if(!isValidEmail(employeeID) and employeeID.isNotBlank()){
-                        "Please enter a valid email!"
+                    if(!isValidEmail(loginViewState.employeeID) and loginViewState.employeeID.isNotBlank()){
+                        loginViewModel.onIdErrorChange("Please enter a valid email!")
+                        loginViewState.idError
                     }else{
-                        ""
+                        loginViewModel.onIdErrorChange("")
+                        loginViewState.idError
                     }
                     //employee ID error message
-                    if(idError.isNotBlank()){
-                        Text(text = idError,
+                    if(loginViewState.idError.isNotBlank()){
+                        Text(text = loginViewState.idError,
                             color = Color(0xFF7C0A02),
                             fontSize = 15.sp)
                     }
@@ -148,8 +147,8 @@ fun LoginPage(auth: FirebaseAuth,
 
                     Spacer(modifier = Modifier.height(40.dp))
                     OutlinedTextField(
-                        value = password,
-                        onValueChange = {password = it},
+                        value = loginViewState.password,
+                        onValueChange = {loginViewModel.onPasswordChange(it)},
                         label = { Text(text = "Password")},
                         modifier = Modifier
                             .fillMaxWidth()
@@ -161,7 +160,7 @@ fun LoginPage(auth: FirebaseAuth,
                             keyboardType = KeyboardType.Password,
                             imeAction = ImeAction.Done
                         ),
-                        isError = !isValidPassword(password),
+                        isError = !isValidPassword(loginViewState.password),
                         shape = RoundedCornerShape(20.dp),
                         colors = OutlinedTextFieldDefaults.colors(
                             errorContainerColor = Color.White,
@@ -193,7 +192,7 @@ fun LoginPage(auth: FirebaseAuth,
                         }
                     )
                     Spacer(modifier = Modifier.height(4.dp))
-                    if(!isValidPassword(password) and password.isNotBlank()){
+                    if(!isValidPassword(loginViewState.password) and loginViewState.password.isNotBlank()){
                         Text(text = "Please enter a valid password",
                             color = Color(0xFF7C0A02),
                             fontSize = 15.sp)
@@ -216,14 +215,13 @@ fun LoginPage(auth: FirebaseAuth,
                          width = 150,
                          onClick = {
                              if (isSignIn) {
-                                 signIn(
-                                     auth, employeeID, password,
+                                 loginViewModel.signIn(
+                                     auth, loginViewState.employeeID, loginViewState.password,
                                      onSignedIn = { signedInUser: FirebaseUser ->
                                          onSignedIn(signedInUser)
                                      },
                                      onSignInError = { errorMessage: String ->
-                                         // Show toast message on sign-in error
-                                         myErrorMessage = errorMessage
+                                         Toast.makeText(context, "Incorrect Email or Password", Toast.LENGTH_SHORT).show()
                                      },
                                      navController = navController,
                                      coroutineScope,

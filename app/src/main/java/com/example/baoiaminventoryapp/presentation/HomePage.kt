@@ -3,21 +3,17 @@ package com.example.baoiaminventoryapp.presentation
 import android.content.Context
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
@@ -27,8 +23,10 @@ import androidx.compose.ui.unit.sp
 import com.google.firebase.auth.FirebaseAuth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -41,7 +39,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.example.baoiaminventoryapp.components.CustomButton
-import com.example.baoiaminventoryapp.components.CustomTextField
 import com.example.baoiaminventoryapp.components.DivueensLogo
 import com.example.baoiaminventoryapp.components.EnclosingBox
 import com.example.baoiaminventoryapp.components.HeaderText
@@ -49,9 +46,9 @@ import com.example.baoiaminventoryapp.components.Spacing
 import com.example.baoiaminventoryapp.components.SubmitButton
 
 @Composable
-fun HomePage(viewModel: MainViewModel = hiltViewModel(), auth: FirebaseAuth, navController: NavController, context: Context) {
+fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, navController: NavController, context: Context) {
     val state = viewModel.state.collectAsState()
-    val aisleNumber = remember { mutableStateOf("") }
+    var aisleNumber by remember { mutableStateOf("") }
     val colorPallete = Color(0xFFC75C85)
     Surface(color = Color.White
         ,modifier = Modifier
@@ -70,7 +67,7 @@ fun HomePage(viewModel: MainViewModel = hiltViewModel(), auth: FirebaseAuth, nav
                     label = "Log out",
                     color = Color.Black,
                     height = 40, width = 120,
-                    onClick = { logout(auth, navController, context) }
+                    onClick = { viewModel.logout(auth, navController, context) }
                 )
                 CustomButton(
                     label = "Start Scanning",
@@ -106,12 +103,10 @@ fun HomePage(viewModel: MainViewModel = hiltViewModel(), auth: FirebaseAuth, nav
                             color = Color.Black
                         )
                         OutlinedTextField(
-                            value = aisleNumber.value,
+                            value = aisleNumber,
+                            onValueChange = {aisleNumber = it},
                             label = { Text(text = "Aisle no.", color = Color.Black)},
-                            onValueChange = {aisleNumber.value = it},
-                            modifier = Modifier
-                                .height(25.dp)
-                                .width(150.dp),
+                            modifier = Modifier.width(200.dp),
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Text,
@@ -128,7 +123,10 @@ fun HomePage(viewModel: MainViewModel = hiltViewModel(), auth: FirebaseAuth, nav
                         )
                     }
                     Spacing(height = 30)
-                    SubmitButton(onClick = {/*the data goes somewhere*/ viewModel.startScanning()})
+                    SubmitButton(onClick = {
+                        viewModel.updateAisleNumber(aisleNumber)
+                        viewModel.sendDataToFirestore(context)
+                    })
                 }
             }
         }

@@ -80,6 +80,8 @@ dependencies {
     implementation ("androidx.navigation:navigation-fragment-compose:2.8.0-beta04")
     implementation(libs.androidx.navigation.compose)
     implementation(libs.firebase.auth.ktx)
+    implementation("com.google.firebase:firebase-firestore")
+
 
     // Coroutine Lifecycle Scopes
     implementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.5.1")

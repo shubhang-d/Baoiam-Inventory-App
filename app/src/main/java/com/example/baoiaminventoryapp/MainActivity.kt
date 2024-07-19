@@ -35,8 +35,3 @@ class MainActivity : ComponentActivity() {
 }
 
 
-private fun onSignInError(errorMessage: String) {
-    // Handle the sign-in error as needed
-    // For now, we'll print the error message
-    println("Sign-in error: $errorMessage")
-}
