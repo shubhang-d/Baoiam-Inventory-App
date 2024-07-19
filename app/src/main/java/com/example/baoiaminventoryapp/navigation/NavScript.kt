@@ -5,6 +5,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.example.baoiaminventoryapp.presentation.HomePage
 import com.example.baoiaminventoryapp.presentation.LoginPage
 import com.google.firebase.auth.FirebaseAuth
@@ -22,16 +23,16 @@ fun NavigationScript(auth: FirebaseAuth,
     NavHost(navController = navController,
         startDestination = if (currentUser != null){ "home"} else{ "login"}){
         composable(route= "login"){
-            LoginPage(auth, onSignedIn = onSignedIn, navController = navController)
+            LoginPage(auth = auth, onSignedIn = onSignedIn, navController = navController)
         }
         composable("signup"){
-            LoginPage(auth, onSignedIn = onSignedIn,  navController = navController)
+            LoginPage(auth = auth, onSignedIn = onSignedIn,  navController = navController)
         }
         composable(route = "home"){
             HomePage(auth = auth, navController = navController, context = context)
         }
         composable(route = "enter"){
-            com.example.baoiaminventoryapp.screens.LoadingScreen()
+            com.example.baoiaminventoryapp.presentation.LoadingScreen(navController = navController)
         }
     }
 }

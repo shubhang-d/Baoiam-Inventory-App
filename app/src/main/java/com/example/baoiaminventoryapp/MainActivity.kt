@@ -21,15 +21,13 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         var currentUser = auth.currentUser
-        setContent {
+        setContent{
             BaoiamInventoryAppTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     val navController = rememberNavController()
                     NavigationScript(auth, navController, currentUser, onSignedIn = {signedInUser->
                         currentUser = signedInUser
-
                     })
-
                 }
             }
         }
@@ -37,8 +35,3 @@ class MainActivity : ComponentActivity() {
 }
 
 
-private fun onSignInError(errorMessage: String) {
-    // Handle the sign-in error as needed
-    // For now, we'll print the error message
-    println("Sign-in error: $errorMessage")
-}
