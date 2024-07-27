@@ -2,6 +2,7 @@ package com.example.baoiaminventoryapp.di
 
 import android.app.Application
 import android.content.Context
+import com.example.baoiaminventoryapp.api.BarcodeLookupService
 import com.google.mlkit.vision.barcode.common.Barcode
 import com.google.mlkit.vision.codescanner.GmsBarcodeScanner
 import com.google.mlkit.vision.codescanner.GmsBarcodeScannerOptions
@@ -11,6 +12,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.scopes.ViewModelScoped
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 
@@ -37,5 +40,20 @@ object AppModule {
     @Provides
     fun provideBarCodeScanner(context: Context,options: GmsBarcodeScannerOptions):GmsBarcodeScanner{
         return GmsBarcodeScanning.getClient(context, options)
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideRetrofit():Retrofit {
+        return Retrofit.Builder()
+            .baseUrl("https://api.barcodelookup.com/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+    }
+
+    @Provides
+    @ViewModelScoped
+    fun provideBarcodeLookupService(retrofit: Retrofit): BarcodeLookupService {
+        return retrofit.create(BarcodeLookupService::class.java)
     }
 }

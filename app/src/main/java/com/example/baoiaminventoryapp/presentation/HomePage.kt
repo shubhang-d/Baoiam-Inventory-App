@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Surface
@@ -24,6 +25,7 @@ import com.google.firebase.auth.FirebaseAuth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -50,6 +52,8 @@ fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, nav
     val state = viewModel.state.collectAsState()
     var aisleNumber by remember { mutableStateOf("") }
     val colorPallete = Color(0xFFC75C85)
+    val product by viewModel.product.observeAsState()
+    viewModel.fetchProduct(barcode = state.value.details, apikey = "wqpopsvmuvjt6birqz0nqri78mm1bk") //this line needs to be run at the instance when a barcode is read
     Surface(color = Color.White
         ,modifier = Modifier
             .fillMaxSize()
@@ -85,8 +89,14 @@ fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, nav
                         .fillMaxWidth()
                 ) {
                     Spacing(height = 30)
-                    HeaderText(modifier = Modifier.align(Alignment.CenterHorizontally)) // I dont like this at all I will replace/ make it look better later
+                    HeaderText(modifier = Modifier.align(Alignment.CenterHorizontally))
                     Spacing(height = 20)
+                    product?.let {
+                        Text(text = "Product name: ${it.productName}")
+                        Text(text = "Manufacturer: ${it.manufacturer}")
+                    } ?: kotlin.run {
+                        Text(text = "Product not found")
+                    }
                     Text(
                         text = state.value.details,
                         color = Color.Black,

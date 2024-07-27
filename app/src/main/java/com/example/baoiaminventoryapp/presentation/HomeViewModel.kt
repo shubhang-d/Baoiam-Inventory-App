@@ -3,9 +3,14 @@ package com.example.baoiaminventoryapp.presentation
 import android.content.Context
 import android.widget.Toast
 import androidx.compose.ui.platform.LocalContext
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
+import com.example.baoiaminventoryapp.api.BarcodeLookupService
+import com.example.baoiaminventoryapp.api.Product
 import com.example.baoiaminventoryapp.domain.repo.MainRepo
 import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
@@ -19,13 +24,33 @@ import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
-    private val repo: MainRepo
+    private val repo: MainRepo,
+    private  val api: BarcodeLookupService
 ):ViewModel() {
 
     private val _state = MutableStateFlow(HomeScreenState())
     val state = _state.asStateFlow()
 
     private val db = Firebase.firestore
+
+    //barcodeAPI
+    private val _product = MutableLiveData<Product?>()
+    val product: LiveData<Product?> = _product
+
+    fun fetchProduct(barcode: String, apikey: String) {
+        viewModelScope.launch {
+            try {
+                val response = api.getProduct(barcode, true, apikey)
+                if (response.products.isNotEmpty()) {
+                    _product.postValue(response.products[0])
+                } else {
+                    _product.postValue(null)
+                }
+            } catch (e: Exception) {
+                _product.postValue(null)
+            }
+        }
+    }
 
 
     fun startScanning(){
