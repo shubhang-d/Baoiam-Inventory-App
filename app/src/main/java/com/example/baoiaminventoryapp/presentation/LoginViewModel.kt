@@ -1,5 +1,7 @@
 package com.example.baoiaminventoryapp.presentation
 
+import android.content.Context
+import android.widget.Toast
 import androidx.compose.animation.core.Animatable
 import androidx.compose.animation.core.AnimationVector1D
 import androidx.lifecycle.ViewModel
@@ -9,12 +11,13 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import io.realm.kotlin.internal.platform.runBlocking
 import io.realm.kotlin.mongodb.App
+import io.realm.kotlin.mongodb.User
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 
-class LoginViewModel: ViewModel() {
+class LoginViewModel: ViewModel( ) {
     private val _uiState = MutableStateFlow(LoginScreenState())
     val uiState: StateFlow<LoginScreenState> = _uiState.asStateFlow()
 
@@ -31,33 +34,38 @@ class LoginViewModel: ViewModel() {
     }
 
     fun signIn(
-        auth: FirebaseAuth,
+        app: App,
         email: String,
         password: String,
-        onSignedIn: (FirebaseUser) -> Unit,
+        onSignedIn: (User?) -> Unit,
         onSignInError: (String) -> Unit,// Callback for sign-in error
         navController: NavController,
         coroutineScope: CoroutineScope,
-        offset: Animatable<Float, AnimationVector1D>
+        offset: Animatable<Float, AnimationVector1D>,
+        context: Context
     ) {
-        val appID = "application-1-ifxueik"
+
         if (isValidEmail(email) and isValidPassword(password)) {
-            val app: App = App.create(appID) // Replace this with your App ID
+            // Replace this with your App ID
             runBlocking {
                 val emailPasswordCredentials =
                     io.realm.kotlin.mongodb.Credentials.emailPassword(email, password)
                 try {
                     val user = app.login(emailPasswordCredentials)
+                    onSignedIn(user)
                     navController.navigate("home")
+                    Toast.makeText(context, "Logged in Successfully!", Toast.LENGTH_SHORT).show()
+
                 } catch (e: Exception) {
                     onSignInError("Invalid email or password")
                     onLoginError(coroutineScope, offset)
                 }
 
 
-            }
+
 
         }
 
     }
+}
 }

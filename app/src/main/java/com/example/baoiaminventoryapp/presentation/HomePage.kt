@@ -44,9 +44,11 @@ import com.example.baoiaminventoryapp.components.EnclosingBox
 import com.example.baoiaminventoryapp.components.HeaderText
 import com.example.baoiaminventoryapp.components.Spacing
 import com.example.baoiaminventoryapp.components.SubmitButton
+import io.realm.kotlin.mongodb.App
+import io.realm.kotlin.mongodb.User
 
 @Composable
-fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, navController: NavController, context: Context) {
+fun HomePage(viewModel: HomeViewModel = hiltViewModel(), navController: NavController, context: Context, user: User?) {
     val state = viewModel.state.collectAsState()
     var aisleNumber by remember { mutableStateOf("") }
     val colorPallete = Color(0xFFC75C85)
@@ -67,7 +69,7 @@ fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, nav
                     label = "Log out",
                     color = Color.Black,
                     height = 40, width = 120,
-                    onClick = { viewModel.logout(auth, navController, context) }
+                    onClick = { viewModel.logout( navController, context, user) }
                 )
                 CustomButton(
                     label = "Start Scanning",
@@ -133,10 +135,3 @@ fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, nav
     }
 }
 
-@Preview(showSystemUi = true, showBackground = true)
-@Composable
-fun HomePagePreview(){
-    HomePage(auth = FirebaseAuth.getInstance(),
-        navController = NavController(LocalContext.current),
-        context = LocalContext.current)
-}

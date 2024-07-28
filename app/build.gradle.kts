@@ -4,7 +4,7 @@ plugins {
     alias(libs.plugins.google.services)
     id("kotlin-kapt")
     alias(libs.plugins.dagger.hilt)
-    id ("io.realm.kotlin")
+    alias(libs.plugins.realm.kotlin)
 
 }
 

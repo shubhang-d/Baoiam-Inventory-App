@@ -42,11 +42,13 @@ import com.google.firebase.auth.FirebaseUser
 import com.example.baoiaminventoryapp.components.CustomButton
 import com.example.baoiaminventoryapp.components.DivueensLogo
 import com.example.baoiaminventoryapp.components.EnclosingBox
+import io.realm.kotlin.mongodb.App
+import io.realm.kotlin.mongodb.User
 
 @Composable
 fun LoginPage(loginViewModel: LoginViewModel = viewModel(),
-              auth: FirebaseAuth,
-              onSignedIn: (FirebaseUser?) -> Unit,
+              app: App,
+              onSignedIn: (User?) -> Unit,
               navController: NavController
 ) {
     val loginViewState by loginViewModel.uiState.collectAsState()
@@ -56,8 +58,6 @@ fun LoginPage(loginViewModel: LoginViewModel = viewModel(),
     var passwordVisibleStatus by remember {
         mutableStateOf(false)
     }
-
-    var isSignIn by remember { mutableStateOf(true) }
 
     var myErrorMessage by remember { mutableStateOf<String?>(null) }
 
@@ -214,20 +214,19 @@ fun LoginPage(loginViewModel: LoginViewModel = viewModel(),
                          height = 50,
                          width = 150,
                          onClick = {
-                             if (isSignIn) {
-                                 loginViewModel.signIn(
-                                     auth, loginViewState.employeeID, loginViewState.password,
-                                     onSignedIn = { signedInUser: FirebaseUser ->
+                                 loginViewModel.signIn(app,
+                                     loginViewState.employeeID, loginViewState.password,
+                                     onSignedIn = { signedInUser: User? ->
                                          onSignedIn(signedInUser)
                                      },
                                      onSignInError = { errorMessage: String ->
-                                         Toast.makeText(context, "Incorrect Email or Password", Toast.LENGTH_SHORT).show()
+                                         Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
                                      },
                                      navController = navController,
                                      coroutineScope,
-                                     offsetX
+                                     offsetX,
+                                     context
                                  )
-                             }
                          }
                     )
                 }

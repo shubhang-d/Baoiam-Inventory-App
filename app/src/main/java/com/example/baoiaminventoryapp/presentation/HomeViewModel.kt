@@ -12,6 +12,9 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
+import io.realm.kotlin.internal.platform.runBlocking
+import io.realm.kotlin.mongodb.App
+import io.realm.kotlin.mongodb.User
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -62,12 +65,18 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-    fun logout(auth: FirebaseAuth, navController: NavController, context: Context){
-        auth.signOut()
-        if(auth.currentUser == null){
+    fun logout(navController: NavController, context: Context, user: User?){
+        try {
+            runBlocking { user?.logOut() }
+
+            Toast.makeText(context, "Logged out Successfully", Toast.LENGTH_SHORT).show()
             navController.navigate("login")
-        }else{
-            Toast.makeText(context, "Failed to signOut", Toast.LENGTH_SHORT).show()
         }
+        catch (e: Exception){
+            Toast.makeText(context, "Logout failed", Toast.LENGTH_SHORT).show()
+        }
+
+
+        //logout logic
     }
 }

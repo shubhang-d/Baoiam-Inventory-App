@@ -19,6 +19,7 @@ firebaseAuthKtx = "23.0.0"
 lifecycleRuntimeKtxVersion = "2.5.1"
 daggerHiltVersion = "2.48"
 appcompat = "1.7.0"
+realmVersion = "1.16.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -52,4 +53,5 @@ android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 google-services = {id = "com.google.gms.google-services", version.ref = "googleServicesVerion"}
 dagger-hilt = {id = "com.google.dagger.hilt.android", version.ref = "daggerHiltVersion"}
+realm-kotlin = {id = "io.realm.kotlin", version.ref = "realmVersion"}
 

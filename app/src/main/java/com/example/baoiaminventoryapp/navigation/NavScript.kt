@@ -10,26 +10,28 @@ import com.example.baoiaminventoryapp.presentation.HomePage
 import com.example.baoiaminventoryapp.presentation.LoginPage
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import io.realm.kotlin.mongodb.App
+import io.realm.kotlin.mongodb.User
 
 
 @Composable
-fun NavigationScript(auth: FirebaseAuth,
+fun NavigationScript(app: App,
                      navController: NavHostController,
-                     currentUser: FirebaseUser?,
-                     onSignedIn: (FirebaseUser?) -> Unit,
+                     currentUser: User?,
+                     onSignedIn: (User?) -> Unit,
 
 ){
     val context = LocalContext.current
     NavHost(navController = navController,
         startDestination = if (currentUser != null){ "home"} else{ "login"}){
         composable(route= "login"){
-            LoginPage(auth = auth, onSignedIn = onSignedIn, navController = navController)
+            LoginPage(app= app, onSignedIn = onSignedIn, navController = navController)
         }
         composable("signup"){
-            LoginPage(auth = auth, onSignedIn = onSignedIn,  navController = navController)
+            LoginPage(app = app, onSignedIn = onSignedIn,  navController = navController)
         }
         composable(route = "home"){
-            HomePage(auth = auth, navController = navController, context = context)
+            HomePage(navController = navController, context = context, user = currentUser)
         }
         composable(route = "enter"){
             com.example.baoiaminventoryapp.presentation.LoadingScreen(navController = navController)

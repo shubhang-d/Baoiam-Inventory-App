@@ -11,22 +11,25 @@ import com.example.baoiaminventoryapp.navigation.NavigationScript
 import com.example.baoiaminventoryapp.ui.theme.BaoiamInventoryAppTheme
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.auth.User
 import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
+import io.realm.kotlin.mongodb.App
 
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    private val auth: FirebaseAuth by lazy { Firebase.auth }
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        var currentUser = auth.currentUser
+        val appID = "application-1-ifxueik"
+        val app: App = App.create(appID)
+        var user: io.realm.kotlin.mongodb.User? = app.currentUser
         setContent{
             BaoiamInventoryAppTheme {
                 Surface(modifier = Modifier.fillMaxSize()) {
                     val navController = rememberNavController()
-                    NavigationScript(auth, navController, currentUser, onSignedIn = {signedInUser->
-                        currentUser = signedInUser
+                    NavigationScript(app, navController, user, onSignedIn = {signedInUser->
+                        user = signedInUser
                     })
                 }
             }
