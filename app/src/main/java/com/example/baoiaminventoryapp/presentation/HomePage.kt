@@ -91,7 +91,7 @@ fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, nav
                     Spacing(height = 30)
                     HeaderText(modifier = Modifier.align(Alignment.CenterHorizontally))
                     Spacing(height = 20)
-//                    val barcode = (state.value.details).toString().trim()
+//                    val barcode = (state.value.details).toLong()
                     Button(onClick = {viewModel.fetchProduct(barcode = "8901030989742", apikey = "wqpopsvmuvjt6birqz0nqri78mm1bk")}) { //debug
                         Text(text = "test") //debug
                     } //debug

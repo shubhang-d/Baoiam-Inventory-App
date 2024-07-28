@@ -3,12 +3,10 @@ package com.example.baoiaminventoryapp.presentation
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.baoiaminventoryapp.api.BarcodeLookupService
 import com.example.baoiaminventoryapp.api.Product
@@ -17,11 +15,9 @@ import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.firestore
 import dagger.hilt.android.lifecycle.HiltViewModel
-import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.net.URLEncoder
 import javax.inject.Inject
 
 @HiltViewModel
@@ -42,9 +38,9 @@ class HomeViewModel @Inject constructor(
     fun fetchProduct(barcode: String, apikey: String) {
         viewModelScope.launch {
             try {
-                val encodedBarcode = URLEncoder.encode(barcode, "UTF-8") //debug attempt
-                val response = api.getProduct(encodedBarcode, true, apikey)
-                Log.d("ProductViewModel", "Scanned Barcode: $barcode") //debug
+                val trimmedBarcode = barcode.trim()
+                Log.d("ProductViewModel", "Scanned Barcode: $trimmedBarcode") //debug
+                val response = api.getProduct(barcode = trimmedBarcode, true, apikey)
                 Log.d("ProductViewModel", "Response: ${response.products}") //debug
                 if (response.products.isNotEmpty()) {
                     _product.postValue(response.products[0])

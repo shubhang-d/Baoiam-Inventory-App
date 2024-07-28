@@ -9,5 +9,5 @@ data class Product(
     val productName: String,
     val manufacturer: String,
     val asin: String,
-    val brand: String
+    val brand: String,
 )
