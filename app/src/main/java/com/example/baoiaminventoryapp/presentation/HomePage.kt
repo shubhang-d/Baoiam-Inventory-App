@@ -53,7 +53,7 @@ fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, nav
     var aisleNumber by remember { mutableStateOf("") }
     val colorPallete = Color(0xFFC75C85)
     val product by viewModel.product.observeAsState()
-    viewModel.fetchProduct(barcode = state.value.details, apikey = "wqpopsvmuvjt6birqz0nqri78mm1bk") //this line needs to be run at the instance when a barcode is read
+     //this line needs to be run at the instance when a barcode is read (moves to line 95)
     Surface(color = Color.White
         ,modifier = Modifier
             .fillMaxSize()
@@ -91,9 +91,14 @@ fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, nav
                     Spacing(height = 30)
                     HeaderText(modifier = Modifier.align(Alignment.CenterHorizontally))
                     Spacing(height = 20)
+//                    val barcode = (state.value.details).toString().trim()
+                    Button(onClick = {viewModel.fetchProduct(barcode = "8901030989742", apikey = "wqpopsvmuvjt6birqz0nqri78mm1bk")}) { //debug
+                        Text(text = "test") //debug
+                    } //debug
                     product?.let {
                         Text(text = "Product name: ${it.productName}")
                         Text(text = "Manufacturer: ${it.manufacturer}")
+                        Text(text = "asin: ${it.asin}")
                     } ?: kotlin.run {
                         Text(text = "Product not found")
                     }

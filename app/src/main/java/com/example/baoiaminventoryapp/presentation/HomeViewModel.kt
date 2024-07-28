@@ -1,6 +1,7 @@
 package com.example.baoiaminventoryapp.presentation
 
 import android.content.Context
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.LiveData
@@ -20,6 +21,7 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
+import java.net.URLEncoder
 import javax.inject.Inject
 
 @HiltViewModel
@@ -40,13 +42,17 @@ class HomeViewModel @Inject constructor(
     fun fetchProduct(barcode: String, apikey: String) {
         viewModelScope.launch {
             try {
-                val response = api.getProduct(barcode, true, apikey)
+                val encodedBarcode = URLEncoder.encode(barcode, "UTF-8") //debug attempt
+                val response = api.getProduct(encodedBarcode, true, apikey)
+                Log.d("ProductViewModel", "Scanned Barcode: $barcode") //debug
+                Log.d("ProductViewModel", "Response: ${response.products}") //debug
                 if (response.products.isNotEmpty()) {
                     _product.postValue(response.products[0])
                 } else {
                     _product.postValue(null)
                 }
             } catch (e: Exception) {
+                Log.e("ProductViewModel", "Error fetching product info", e) //debug
                 _product.postValue(null)
             }
         }

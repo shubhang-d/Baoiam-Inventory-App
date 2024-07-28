@@ -8,4 +8,5 @@ data class Product(
     val barcode: String,
     val productName: String,
     val manufacturer: String,
+    val asin: String
 )
