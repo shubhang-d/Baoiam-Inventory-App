@@ -108,6 +108,7 @@ fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, nav
                         modifier = Modifier
                             .padding(start = 15.dp)
                     )
+                    //text
                     Spacing(height = 5)
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Spacing(width = 15)
