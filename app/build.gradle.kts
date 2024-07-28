@@ -4,6 +4,7 @@ plugins {
     alias(libs.plugins.google.services)
     id("kotlin-kapt")
     alias(libs.plugins.dagger.hilt)
+    id ("io.realm.kotlin")
 
 }
 
@@ -107,6 +108,13 @@ dependencies {
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation(kotlin("script-runtime"))
     implementation (libs.androidx.material.icons.extended)
+
+    //mongoDB realm libs3
+    implementation ("io.realm.kotlin:library-base:1.16.0")
+    // If using Device Sync
+    implementation ("io.realm.kotlin:library-sync:1.16.0")
+    // If using coroutines with the SDK
+    implementation ("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.0")
 }
 
 kapt {
