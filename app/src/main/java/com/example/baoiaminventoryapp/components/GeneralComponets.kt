@@ -65,7 +65,7 @@ fun HeaderText (qrCodeDetected: Boolean = false, modifier:Modifier) {
         fontWeight = FontWeight.Bold,
         fontFamily = FontFamily.Monospace,
         modifier = modifier,
-        color = Color.Black
+        color = Color.White
     )
 }
 

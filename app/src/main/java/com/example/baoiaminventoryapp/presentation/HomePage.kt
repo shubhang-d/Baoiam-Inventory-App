@@ -41,6 +41,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import coil.compose.AsyncImage
+
 import com.example.baoiaminventoryapp.components.CustomButton
 import com.example.baoiaminventoryapp.components.DivueensLogo
 import com.example.baoiaminventoryapp.components.EnclosingBox
@@ -52,6 +54,7 @@ import com.example.baoiaminventoryapp.components.SubmitButton
 fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, navController: NavController, context: Context) {
     val state = viewModel.state.collectAsState()
     var aisleNumber by remember { mutableStateOf("") }
+    var price by remember { mutableStateOf("") }
     val colorPallete = Color(0xFFC75C85)
     val product by viewModel.product.observeAsState()
     val attributes = listOf(
@@ -65,7 +68,8 @@ fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, nav
         "ASIN" to product?.asin,
         "Manufacturer" to product?.manufacturer,
     )
-    viewModel.fetchProduct(barcode = state.value.details, apikey = "wqpopsvmuvjt6birqz0nqri78mm1bk")//this line needs to be run at the instance when a barcode is read (moves to line 95)
+    val imageurl = product?.images?.get(0)
+    viewModel.fetchProduct(barcode = state.value.details, apikey = "xacjlb6bba3exn1c2kxdeyawykznox")//this line needs to be run at the instance when a barcode is read (moves to line 95)
     Surface(color = Color.White
         ,modifier = Modifier
             .fillMaxSize()
@@ -93,23 +97,35 @@ fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, nav
                 )
             }
             Spacing(height = 20)
-            DivueensLogo()
+            if (!imageurl.isNullOrBlank()) {
+                AsyncImage(model = imageurl, contentDescription = "Product Image")
+            } else {
+                DivueensLogo()
+            }
             Spacing(height = 20)
             EnclosingBox {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
                 ) {
-                    Spacing(height = 30)
-                    HeaderText(modifier = Modifier.align(Alignment.CenterHorizontally))
                     Spacing(height = 20)
+                    HeaderText(modifier = Modifier.align(Alignment.CenterHorizontally))
+                    Spacing(height = 10)
                     attributes.forEach { (label, value) ->
                         if (!value.isNullOrBlank()) {
-                            Text(
-                                text = "$label: $value",
-                                color = Color.Black,
-                                modifier = Modifier.padding(start = 15.dp)
-                            )
+                            Row (verticalAlignment = Alignment.CenterVertically){
+                                Text(
+                                    text = "$label: ",
+                                    color = Color.Black,
+                                    fontWeight = FontWeight.Bold,
+                                    modifier = Modifier.padding(start = 15.dp)
+                                )
+                                Text(
+                                    text = "$value",
+                                    color = Color.Black,
+                                )
+                            }
+
                         }
                     }
                     product ?: Text(
@@ -117,13 +133,6 @@ fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, nav
                         color = Color.Black,
                         modifier = Modifier.padding(start = 15.dp)
                     )
-//                    Text(
-//                        text = state.value.details,
-//                        color = Color.Black,
-//                        modifier = Modifier
-//                            .padding(start = 15.dp)
-//                    )
-                    //text
                     Spacing(height = 5)
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Spacing(width = 15)
@@ -136,8 +145,10 @@ fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, nav
                         OutlinedTextField(
                             value = aisleNumber,
                             onValueChange = {aisleNumber = it},
-                            label = { Text(text = "Aisle no.", color = Color.Black)},
-                            modifier = Modifier.width(200.dp),
+//                            label = { Text(text = "Aisle no.", color = Color.Black)},
+                            modifier = Modifier
+                                .width(200.dp)
+                                .height(50.dp),
                             singleLine = true,
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Text,
@@ -150,12 +161,42 @@ fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, nav
                                 unfocusedContainerColor = Color.White,
                                 unfocusedBorderColor = Color.LightGray,
                                 focusedBorderColor = Color.White,
+                            ),
+                        )
+                    }
+                    Spacing(height = 10)
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Spacing(width = 15)
+                        Text(
+                            text = "  Price:     ",
+                            fontWeight = FontWeight.Bold,
+                            fontSize = 25.sp,
+                            color = Color.Black
+                        )
+                        OutlinedTextField(
+                            value = price,
+                            onValueChange = { price = it},
+                            modifier = Modifier
+                                .width(200.dp)
+                                .height(50.dp),
+                            singleLine = true,
+                            keyboardOptions = KeyboardOptions(
+                                keyboardType = KeyboardType.Number,
+                                imeAction = ImeAction.Done,
+                            ),
+                            textStyle = TextStyle(color = Color.Black),
+                            shape = RoundedCornerShape(10.dp),
+                            colors = OutlinedTextFieldDefaults.colors(
+                                focusedContainerColor = Color.White,
+                                unfocusedContainerColor = Color.White,
+                                unfocusedBorderColor = Color.LightGray,
+                                focusedBorderColor = Color.White,
                             )
                         )
                     }
-                    Spacing(height = 30)
+                    Spacing(height = 20)
                     SubmitButton(onClick = {
-                        viewModel.updateAisleNumber(aisleNumber)
+                        viewModel.updateAisleNumberAndPrice(aisleNumber = aisleNumber, price = price)
                         viewModel.sendDataToFirestore(context)
                     })
                 }

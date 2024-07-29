@@ -34,6 +34,8 @@ class HomeViewModel @Inject constructor(
     //barcodeAPI
     private val _product = MutableLiveData<Product?>()
     val product: LiveData<Product?> = _product
+//    private val _imageUrl = MutableLiveData<String>()
+//    val imageUrl: LiveData<String> = _imageUrl
 
     fun fetchProduct(barcode: String, apikey: String) {
         viewModelScope.launch {
@@ -54,7 +56,6 @@ class HomeViewModel @Inject constructor(
         }
     }
 
-
     fun startScanning(){
         var newBarcode = ""
         viewModelScope.launch {
@@ -63,25 +64,27 @@ class HomeViewModel @Inject constructor(
                     _state.value = state.value.copy(
                         details = it
                     )
-                    newBarcode = beautifyBarcode(_state.value.details)
-                    fetchProduct(barcode = newBarcode, apikey = "wqpopsvmuvjt6birqz0nqri78mm1bk")
+//                    newBarcode = beautifyBarcode(_state.value.details)
+//                    fetchProduct(barcode = newBarcode, apikey = "wqpopsvmuvjt6birqz0nqri78mm1bk")
                 }
             }
         }
     }
-    fun updateAisleNumber(number: String) {
-        _state.value = _state.value.copy(aisleNumber = number)
+    fun updateAisleNumberAndPrice(aisleNumber: String, price:String) {
+        _state.value = _state.value.copy(aisleNumber = aisleNumber)
+        _state.value = _state.value.copy(price = price)
     }
 
     fun sendDataToFirestore(context: Context){
         if (_state.value.details.equals("Start scanning to get details")) {
             Toast.makeText(context, "Please start scanning first", Toast.LENGTH_SHORT).show()
-        }else if(_state.value.aisleNumber.isEmpty()){
-            Toast.makeText(context, "Please enter Aisle Details Again", Toast.LENGTH_SHORT).show()
+        }else if(_state.value.aisleNumber.isEmpty() or _state.value.price.isEmpty()){
+            Toast.makeText(context, "Please enter Aisle Details and Price Again", Toast.LENGTH_SHORT).show()
         }else{
             val data = hashMapOf(
                 "data" to _state.value.details,
-                "aisleNumber" to _state.value.aisleNumber
+                "aisleNumber" to _state.value.aisleNumber,
+                "price" to _state.value.price
             )
             db.collection("Products").document().set(data).addOnSuccessListener {
                 Toast.makeText(context, "Data Updated Successfully", Toast.LENGTH_SHORT).show()
