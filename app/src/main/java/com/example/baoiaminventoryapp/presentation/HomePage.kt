@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.asPaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBars
 import androidx.compose.foundation.layout.width
@@ -53,7 +54,18 @@ fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, nav
     var aisleNumber by remember { mutableStateOf("") }
     val colorPallete = Color(0xFFC75C85)
     val product by viewModel.product.observeAsState()
-     //this line needs to be run at the instance when a barcode is read (moves to line 95)
+    val attributes = listOf(
+        "Title" to product?.title,
+        "Brand" to product?.brand,
+        "Model" to product?.model,
+        "Weight" to product?.weight,
+        "Length" to product?.length,
+        "Height" to product?.height,
+        "Width" to product?.width,
+        "ASIN" to product?.asin,
+        "Manufacturer" to product?.manufacturer,
+    )
+    viewModel.fetchProduct(barcode = state.value.details, apikey = "wqpopsvmuvjt6birqz0nqri78mm1bk")//this line needs to be run at the instance when a barcode is read (moves to line 95)
     Surface(color = Color.White
         ,modifier = Modifier
             .fillMaxSize()
@@ -91,23 +103,26 @@ fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, nav
                     Spacing(height = 30)
                     HeaderText(modifier = Modifier.align(Alignment.CenterHorizontally))
                     Spacing(height = 20)
-//                    val barcode = (state.value.details).toLong()
-                    Button(onClick = {viewModel.fetchProduct(barcode = "8901030989742", apikey = "wqpopsvmuvjt6birqz0nqri78mm1bk")}) { //debug
-                        Text(text = "test") //debug
-                    } //debug
-                    product?.let {
-                        Text(text = "Product name: ${it.productName}")
-                        Text(text = "Manufacturer: ${it.manufacturer}")
-                        Text(text = "asin: ${it.asin}")
-                    } ?: kotlin.run {
-                        Text(text = "Product not found")
+                    attributes.forEach { (label, value) ->
+                        if (!value.isNullOrBlank()) {
+                            Text(
+                                text = "$label: $value",
+                                color = Color.Black,
+                                modifier = Modifier.padding(start = 15.dp)
+                            )
+                        }
                     }
-                    Text(
-                        text = state.value.details,
+                    product ?: Text(
+                        text = "Start Scanning to get details",
                         color = Color.Black,
-                        modifier = Modifier
-                            .padding(start = 15.dp)
+                        modifier = Modifier.padding(start = 15.dp)
                     )
+//                    Text(
+//                        text = state.value.details,
+//                        color = Color.Black,
+//                        modifier = Modifier
+//                            .padding(start = 15.dp)
+//                    )
                     //text
                     Spacing(height = 5)
                     Row(verticalAlignment = Alignment.CenterVertically) {

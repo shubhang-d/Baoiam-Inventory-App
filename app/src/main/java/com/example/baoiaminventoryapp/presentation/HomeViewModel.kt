@@ -38,7 +38,7 @@ class HomeViewModel @Inject constructor(
     fun fetchProduct(barcode: String, apikey: String) {
         viewModelScope.launch {
             try {
-                val trimmedBarcode = barcode.trim()
+                val trimmedBarcode = (barcode.split(":"))[1].trim()
                 Log.d("ProductViewModel", "Scanned Barcode: $trimmedBarcode") //debug
                 val response = api.getProduct(barcode = trimmedBarcode, true, apikey)
                 Log.d("ProductViewModel", "Response: ${response.products}") //debug
