@@ -1,6 +1,7 @@
 package com.example.baoiaminventoryapp.presentation
 
 import android.content.Context
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -53,6 +54,9 @@ fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, nav
     var aisleNumber by remember { mutableStateOf("") }
     val colorPallete = Color(0xFFC75C85)
     val product by viewModel.product.observeAsState()
+    val newBarcode = remember {
+        mutableStateOf("")
+    }
      //this line needs to be run at the instance when a barcode is read (moves to line 95)
     Surface(color = Color.White
         ,modifier = Modifier
@@ -91,14 +95,20 @@ fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, nav
                     Spacing(height = 30)
                     HeaderText(modifier = Modifier.align(Alignment.CenterHorizontally))
                     Spacing(height = 20)
-//                    val barcode = (state.value.details).toLong()
-                    Button(onClick = {viewModel.fetchProduct(barcode = "8901030989742", apikey = "wqpopsvmuvjt6birqz0nqri78mm1bk")}) { //debug
+                    val barcode = (state.value.details)
+                    newBarcode.value = beautifyBarcode(barcode)
+                    //"8901030989742"
+                    //"8908000034730"
+                    Button(onClick = {viewModel.fetchProduct(barcode = newBarcode.value, apikey = "wqpopsvmuvjt6birqz0nqri78mm1bk")}) { //debug
                         Text(text = "test") //debug
                     } //debug
                     product?.let {
-                        Text(text = "Product name: ${it.productName}")
-                        Text(text = "Manufacturer: ${it.manufacturer}")
+
+                        Text(text = "Product name: ${it.title}")
+                        Text(text = "Manufacturer: ${it.brand}")
                         Text(text = "asin: ${it.asin}")
+                        Text(text = "Image: ${it.images[0]}")
+
                     } ?: kotlin.run {
                         Text(text = "Product not found")
                     }
@@ -147,6 +157,12 @@ fun HomePage(viewModel: HomeViewModel = hiltViewModel(), auth: FirebaseAuth, nav
             }
         }
     }
+}
+
+fun beautifyBarcode(barcode: String): String{
+    var newBarcode = barcode.substringAfterLast(":")
+    Log.d("Barcode213", newBarcode.trim())
+    return newBarcode.trim()
 }
 
 @Preview(showSystemUi = true, showBackground = true)

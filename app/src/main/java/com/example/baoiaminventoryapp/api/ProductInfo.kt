@@ -5,9 +5,9 @@ data class ProductResponse (
 )
 
 data class Product(
-    val barcode: String,
-    val productName: String,
-    val manufacturer: String,
-    val asin: String,
+    val barcode_number: String,
+    val title: String,
     val brand: String,
+    val asin: String,
+    val images: List<String>
 )

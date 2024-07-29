@@ -56,12 +56,15 @@ class HomeViewModel @Inject constructor(
 
 
     fun startScanning(){
+        var newBarcode = ""
         viewModelScope.launch {
             repo.startScanning().collect{
                 if (!it.isNullOrBlank()){
                     _state.value = state.value.copy(
                         details = it
                     )
+                    newBarcode = beautifyBarcode(_state.value.details)
+                    fetchProduct(barcode = newBarcode, apikey = "wqpopsvmuvjt6birqz0nqri78mm1bk")
                 }
             }
         }
